@@ -16,7 +16,7 @@ class Controller {
     const { fullName, email, username, password, roles } = req.body;
 
     User.create({ fullName, email, username, password, roles })
-      .then(() => res.redirect('/user/login?password='))
+      .then(() => res.redirect('/user/find-acc'))
       .catch(err => res.send(err))
   }
 
@@ -28,7 +28,7 @@ class Controller {
     const { fullName, email, username, password, roles } = req.body;
 
     User.create({ fullName, email, username, password, roles })
-      .then(() => res.redirect('/user/login'))
+      .then(() => res.redirect('/user/find-acc'))
       .catch(err => res.send(err))
   }
 

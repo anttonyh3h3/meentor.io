@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs')
+const { nanoid } = require('nanoid')
 
 'use strict';
 const {
@@ -31,12 +32,8 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'User',
     hooks: {
       beforeCreate(user, options) {
-        const salt = bcrypt.genSaltSync(8);
-        const hash = bcrypt.hashSync(user.password, salt)
+        user.password = nanoid()
 
-        user.password = hash
-      },
-      beforeUpdate(user, options) {
         const salt = bcrypt.genSaltSync(8);
         const hash = bcrypt.hashSync(user.password, salt)
 
