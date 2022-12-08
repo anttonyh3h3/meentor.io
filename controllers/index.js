@@ -61,6 +61,38 @@ class Controller {
             })
     }
 
+    static studentAddNewCourse(req, res){
+        const userId = +req.params.id
+        const courseId = +req.params.courseId
+        Course.findAll({
+            include: {
+                model: User,
+                as: "Instructor"
+            }
+        })
+            .then(data => {
+                // res.send(data)
+                // console.log(userId)
+                res.render('addNewCourse', { data, userId, courseId })
+            })
+            .catch(err => {
+                res.send(err)
+            })
+    }
+
+    static studentPostNewCourse(req, res){
+        const userId = +req.params.id
+        const courseId = +req.params.courseId
+        UserCourse.create({UserId: userId})
+            .then(data => {
+                console.log(userId, courseId)
+                res.redirect('/students')
+            })
+            .catch(err => {
+                res.send(err)
+            })
+    }
+
     static editMentoringDate(req, res){
         const id = +req.params.id
         User.findByPk(id)
@@ -101,7 +133,8 @@ class Controller {
             })
     }
 
-    static courseDetail(req, res){
+    // MERGE INI
+    static courseListForStudent(req, res){
         Course.findAll({
             include: {
                 model: User,
@@ -109,13 +142,41 @@ class Controller {
             }
         })
             .then(data => {
+                res.render('courseListForStudent', { data })
                 // res.send(data)
-                res.render('courseDetails', { data })
             })
             .catch(err => {
                 res.send(err)
             })
     }
+
+    static studentBuyCourse(req, res){
+        const id = +req.params.id
+        Course.findByPk(id, {
+            include: {
+                model: User,
+                as: "Instructor"
+            }
+        })
+            .then(data => {
+                res.render('studentBuyCourse', { data, formatDate })
+            })
+            .catch(err => {
+                res.send(err)
+            })
+    }
+
+    static buyCoursePost(req, res){
+        const courseId = +req.params.id
+        UserCourse.create({CourseId: courseId})
+            .then(data => {
+                res.redirect('/courses')
+            })
+            .catch(err => {
+                res.send(err)
+            })
+    }
+
 }
 
 // UserCourse.create({

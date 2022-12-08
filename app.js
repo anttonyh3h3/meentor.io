@@ -11,10 +11,18 @@ app.get('/students', Controller.studentList)
 app.get('/students/:id/detail', Controller.studentDetails)
 app.get('/students/:id/edit', Controller.studentEdit)
 app.post('/students/:id/edit', Controller.studentEditPost)
+
+app.get('/students/:id/addNewCourse/:courseId', Controller.studentAddNewCourse)
+app.post('/students/:id/addNewCourse/:courseId', Controller.studentPostNewCourse)
+
 app.get('/students/mentoringdate/:id/edit', Controller.editMentoringDate)
 app.post('/students/mentoringdate/:id/edit', Controller.postMentoringDate)
+
 app.get('/instructors', Controller.instructorList)
-app.get('/courses', Controller.courseDetail)
+
+app.get('/courses', Controller.courseListForStudent)
+app.get('/courses/:id/buyCourse', Controller.studentBuyCourse)
+app.post('/course/:id/buyCourse')
 
 
 app.listen(port, () => {
