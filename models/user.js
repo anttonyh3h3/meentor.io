@@ -11,10 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.belongsToMany(models.Course, {through: models.UserCourse })
+      User.belongsToMany(models.Course, {through: models.UserCourse})
       User.hasMany(models.UserCourse)
-      User.hasOne(models.Course, { as: 'Instructor' })
+      User.hasOne(models.Course)
       User.hasMany(models.Mentoring)
+    }
+
+    inputDate(){
+      return this.mentoringDate.toISOString().slice(0, 10)
     }
   }
   User.init({
