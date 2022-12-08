@@ -1,3 +1,6 @@
+const bcrypt = require('bcryptjs')
+const { nanoid } = require('nanoid')
+
 'use strict';
 const {
   Model
@@ -31,6 +34,16 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'User',
+    hooks: {
+      beforeCreate(user, options) {
+        user.password = nanoid()
+
+        const salt = bcrypt.genSaltSync(8);
+        const hash = bcrypt.hashSync(user.password, salt)
+
+        user.password = hash
+      }
+    }
   });
   return User;
 };

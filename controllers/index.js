@@ -1,140 +1,107 @@
-const { User, Course, UserCourse } = require('../models')
-const { formatDate } = require('../helpers')
+const bcrypt = require('bcryptjs')
+const { User } = require("../models");
 
 class Controller {
-    static home(req, res) {
-        res.render('home')
-    }
+  static home(req, res) {
+    const { userRole } = req.session
 
-    static studentList(req, res){
-        User.findAll({
-            where: {
-                roles: 'Student'
-            },
-            include: Course,
-            order: [['fullName', 'ASC']]
-        })
-            .then(data => {
-                res.render('studentList', { data, formatDate })
-                // res.send(data)
-            })
-            .catch(err => {
-                res.send(err)
-            })
-    }
+    res.render("home", { userRole });
+  }
 
-    static studentDetails(req, res){
-        const id = +req.params.id
-        User.findByPk(id, {
-            include: Course
-        })
-            .then(data => {
-                res.render('studentDetails', { data, formatDate })
-                // res.send(data)
-            })
-            .catch(err => {
-                res.send(err)
-            })
-    }
+  static register(req, res) {
+    res.render("user-register-form");
+  }
 
-    static studentEdit(req, res){
-        const id = +req.params.id
-        User.findByPk(id)
-            .then(data => {
-                res.render('studentEdit', { data })
-                // res.send(data)
-            })
-            .catch(err => {
-                res.send(err)
-            })
-    }
+  static registerPost(req, res) {
+    const { fullName, email, username, password, roles } = req.body;
 
-    static studentEditPost(req, res){
-        const id = +req.params.id
-        const { fullName, username, email } = req.body
-        User.update({ fullName, username, email }, {where: {id}})
-            .then(() => {
-                res.redirect('/students')
-            })
-            .catch(err => {
-                res.send(err)
-            })
-    }
+    User.create({ fullName, email, username, password, roles })
+      .then(() => res.redirect('/user/find-acc'))
+      .catch(err => res.send(err))
+  }
 
-    static studentAddNewCourse(req, res){
-        const userId = +req.params.id
-        const courseId = +req.params.courseId
-        Course.findAll({
-            include: {
-                model: User,
-                as: "Instructor"
-            }
-        })
-            .then(data => {
-                // res.send(data)
-                // console.log(userId)
-                res.render('addNewCourse', { data, userId, courseId })
-            })
-            .catch(err => {
-                res.send(err)
-            })
-    }
+  static registerInstructor(req, res) {
+    res.render("instructor-register-form");
+  }
 
-    static studentPostNewCourse(req, res){
-        const userId = +req.params.id
-        const courseId = +req.params.courseId
-        UserCourse.create({UserId: userId})
-            .then(data => {
-                console.log(userId, courseId)
-                res.redirect('/students')
-            })
-            .catch(err => {
-                res.send(err)
-            })
-    }
+  static registerInstructorPost(req, res) {
+    const { fullName, email, username, password, roles } = req.body;
 
-    static editMentoringDate(req, res){
-        const id = +req.params.id
-        User.findByPk(id)
-            .then(data => {
-                res.render('mentoringDateEdit', { data })
-                // res.send(data)
-            })
-            .catch(err => {
-                res.send(err)
-            })
-    }
+    User.create({ fullName, email, username, password, roles })
+      .then(() => res.redirect('/user/find-acc'))
+      .catch(err => res.send(err))
+  }
 
-    static postMentoringDate(req, res){
-        const id = +req.params.id
-        const { mentoringDate } = req.body
-        User.update({ mentoringDate }, {where: {id}})
-            .then(() => {
-                res.redirect('/students')
-            })
-            .catch(err => {
-                res.send(err)
-            })
-    }
+  static userLogin(req, res) {
+    const { error } = req.query
 
-    static instructorList(req, res){
-        User.findAll({
-            where: {
-                roles: 'Instructor'
-            },
-            include: Course
-        })
-            .then(data => {
-                // res.render('instructorList', { data, formatDate })
-                res.send(data)
-            })
-            .catch(err => {
-                res.send(err)
-            })
-    }
+    res.render('login', { error })
+  }
 
-    // MERGE INI
-    static courseListForStudent(req, res){
+  static userChangePassSearch(err, res) {
+    res.render('find-acc')
+  }
+
+  static userChangePass(req, res) {
+    const { username } = req.query
+
+    User.findOne({ where: { username } })
+      .then(data => {
+        res.render('change-pass-form', { data })
+      })
+      .catch(err => res.send(err))
+    
+  }
+  
+  static userChangePassPost(req, res) {
+    const { username, password } = req.body
+
+    const salt = bcrypt.genSaltSync(8);
+    const hash = bcrypt.hashSync(password, salt)
+    const hashedPass = hash
+
+    User.update({ password: hashedPass }, { where: { username } })
+      .then(() => res.redirect('/user/login'))
+      .catch(err => res.send(err))
+  }
+
+  static userLoginPost(req, res) {
+    const { username, password } = req.body
+
+    User.findOne({ where: { username }})
+      .then(user => {
+        
+        if (user) {
+          const isValidPass = bcrypt.compareSync(password, user.password)
+
+          if (isValidPass) {
+
+            req.session.userId = user.id
+            req.session.userRole = user.roles
+
+            return res.redirect('/')
+          } else {
+            const error = 'username or password invalid'
+            return res.redirect(`/user/login?error=${error}`)
+          }
+        } else {
+          const error = 'username or password invalid'
+          return res.redirect(`/user/login?error=${error}`)
+        }
+      })
+      .catch(err => {
+        res.send('ini err')
+      })
+  }
+
+  static userLogout(req, res) {
+    req.session.destroy((err) => {
+      if (err) console.log(err);
+      else res.redirect('/')
+    })
+  }
+  
+  static courseListForStudent(req, res){
         Course.findAll({
             include: {
                 model: User,
@@ -176,19 +143,6 @@ class Controller {
                 res.send(err)
             })
     }
-
 }
 
-// UserCourse.create({
-//     UserId: 12,
-//     CourseId: 2
-// })
-
-// Course.create({
-//     name: 'fisika',
-//     description: 'asasdasdasdsa',
-//     duration: 90,
-//     UserId: 2
-// })
-
-module.exports = Controller
+module.exports = Controller;
