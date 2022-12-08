@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Course</title>
+</head>
+<body>
+    <h1>Add New Course</h1>
+
+    
+    <form action="/students/<%= userId%>/addNewCourse/<%= data.id %>" method="post">
+        <select name="CourseId">
+            <option selected disabled>--SELECT COURSE--</option>
+            <% data.forEach(el => { %>
+                <% if (!el.Instructor) { %>
+                    <option value="<%= el.id %>"><%= el.name %> --- No Instructor Yet </option>
+                <% } else { %>
+                    <option value="<%= el.id %>"><%= el.name %> --- <%= el.Instructor.fullName %> </option>
+                <% } %> 
+            <% }) %>
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

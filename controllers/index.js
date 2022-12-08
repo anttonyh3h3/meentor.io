@@ -108,6 +108,49 @@ class Controller {
       else res.redirect('/')
     })
   }
+  
+  static courseListForStudent(req, res){
+        Course.findAll({
+            include: {
+                model: User,
+                as: "Instructor"
+            }
+        })
+            .then(data => {
+                res.render('courseListForStudent', { data })
+                // res.send(data)
+            })
+            .catch(err => {
+                res.send(err)
+            })
+    }
+
+    static studentBuyCourse(req, res){
+        const id = +req.params.id
+        Course.findByPk(id, {
+            include: {
+                model: User,
+                as: "Instructor"
+            }
+        })
+            .then(data => {
+                res.render('studentBuyCourse', { data, formatDate })
+            })
+            .catch(err => {
+                res.send(err)
+            })
+    }
+
+    static buyCoursePost(req, res){
+        const courseId = +req.params.id
+        UserCourse.create({CourseId: courseId})
+            .then(data => {
+                res.redirect('/courses')
+            })
+            .catch(err => {
+                res.send(err)
+            })
+    }
 }
 
 module.exports = Controller;

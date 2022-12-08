@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+</head>
+<body>
+    <h1><%= data.fullName %>'s personal details</h1>
+
+    <p>
+        <strong>Full name :</strong> <%= data.fullName %>
+    </p>
+    <p>
+        <strong>Username :</strong> <%= data.username %> 
+    </p>
+    <p>
+        <strong>Email address :</strong> <%= data.email %>
+    </p>
+    <p>
+        <% if (data.mentoringDate !== null) { %>
+            <strong>Mentoring Date :</strong> <%= formatDate(data.mentoringDate) %> | <a href="/students/mentoringdate/<%= data.id %>/edit"> Edit your mentoring date </a>
+        <% } else { %>
+            <strong>Mentoring Date :</strong> <a href="/students/mentoringdate/<%= data.id %>/edit">Book Your Mentor</a>
+        <% } %> 
+    </p>
+    <p>
+        <strong>Join Date :</strong> <%= formatDate(data.createdAt) %>
+    </p>
+    <p>
+        <strong>Last Update :</strong> <%= formatDate(data.updatedAt) %>
+    </p>
+    <p>
+        <% data.Courses.forEach((el, index) => { %>
+            <strong>Course <%= ++index %>  :</strong><%= el.name %> <br>
+        <% }) %>
+    </p>
+    <a href="/students/<%= data.id %>/addNewCourse">Add Course</a> | <a href="">Change Password</a> | <a href="/students/<%= data.id %>/edit ">Edit Profile</a>
+</body>
+</html>
