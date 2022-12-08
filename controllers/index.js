@@ -9,7 +9,9 @@ class Controller {
   }
 
   static register(req, res) {
-    res.render("user-register-form");
+    const { errors } = req.query
+
+    res.render("user-register-form", { errors });
   }
 
   static registerPost(req, res) {
@@ -17,7 +19,13 @@ class Controller {
 
     User.create({ fullName, email, username, password, roles })
       .then(() => res.redirect('/user/find-acc'))
-      .catch(err => res.send(err))
+      // .catch(err => res.send(err.errors.map(e => e.message)))
+      .catch(err => {
+        const errors = err.errors.map(e => e.message)
+
+        res.redirect(`/user/register?errors=${errors}`)
+      })
+      // .catch(err => res.render('user-register-form', { error: err.errors.map(e => e.message) }))
   }
 
   static registerInstructor(req, res) {
