@@ -45,6 +45,7 @@ form p {
   background-color: #aaaaaa;
   padding: 5px;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 
 .submit-btn:hover {
@@ -53,4 +54,10 @@ form p {
   background-color: #7e7e7e;
   padding: 5px;
   cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.forgot-pass {
+  text-decoration: none;
+  color: red;
 }

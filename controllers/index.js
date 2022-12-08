@@ -16,7 +16,7 @@ class Controller {
     const { fullName, email, username, password, roles } = req.body;
 
     User.create({ fullName, email, username, password, roles })
-      .then(() => res.redirect('/'))
+      .then(() => res.redirect('/user/login?password='))
       .catch(err => res.send(err))
   }
 
@@ -28,7 +28,7 @@ class Controller {
     const { fullName, email, username, password, roles } = req.body;
 
     User.create({ fullName, email, username, password, roles })
-      .then(() => res.redirect('/'))
+      .then(() => res.redirect('/user/login'))
       .catch(err => res.send(err))
   }
 
@@ -36,6 +36,33 @@ class Controller {
     const { error } = req.query
 
     res.render('login', { error })
+  }
+
+  static userChangePassSearch(err, res) {
+    res.render('find-acc')
+  }
+
+  static userChangePass(req, res) {
+    const { username } = req.query
+
+    User.findOne({ where: { username } })
+      .then(data => {
+        res.render('change-pass-form', { data })
+      })
+      .catch(err => res.send(err))
+    
+  }
+  
+  static userChangePassPost(req, res) {
+    const { username, password } = req.body
+
+    const salt = bcrypt.genSaltSync(8);
+    const hash = bcrypt.hashSync(password, salt)
+    const hashedPass = hash
+
+    User.update({ password: hashedPass }, { where: { username } })
+      .then(() => res.redirect('/user/login'))
+      .catch(err => res.send(err))
   }
 
   static userLoginPost(req, res) {

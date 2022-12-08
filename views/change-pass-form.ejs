@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/register-form.css">
+  <title>Register Form</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Forgot Password</h1>
+
+    <form action="/user/change-pass" method="post">
+      <p>
+        Your username <br>
+        <input type="text" name="username" placeholder="Username" class="form-input" value="<%= data.username %>">
+      </p>
+      <p>
+        New Password <br>
+        <input type="text" name="password" id="" placeholder="Password" class="form-input">
+      </p>
+      <input type="submit" value="Save" class="submit-btn">
+    </form>
+  </div>
+</body>
+</html>
