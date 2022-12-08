@@ -26,4 +26,21 @@ router.get('/user/logout', Controller.userLogout)
 
 router.get('/', Controller.home)
 
+// router.get('/students', Controller.studentList)
+// router.get('/students/:id/detail', Controller.studentDetails)
+// router.get('/students/:id/edit', Controller.studentEdit)
+// router.post('/students/:id/edit', Controller.studentEditPost)
+
+// router.get('/students/:id/addNewCourse/:courseId', Controller.studentAddNewCourse)
+// router.post('/students/:id/addNewCourse/:courseId', Controller.studentPostNewCourse)
+
+// router.get('/students/mentoringdate/:id/edit', Controller.editMentoringDate)
+// router.post('/students/mentoringdate/:id/edit', Controller.postMentoringDate)
+
+// router.get('/instructors', Controller.instructorList)
+
+router.get('/courses', Controller.courseListForStudent)
+router.get('/courses/:id/buyCourse', Controller.studentBuyCourse)
+router.post('/courses/:id/buyCourse', Controller.buyCoursePost)
+
 module.exports = router;

@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
-const { User } = require("../models");
+const { User, Course, UserCourse } = require("../models");
+const { formatDate } = require('../helpers')
 
 class Controller {
   static home(req, res) {
@@ -134,6 +135,7 @@ class Controller {
             }
         })
             .then(data => {
+              // res.send(data)
                 res.render('studentBuyCourse', { data, formatDate })
             })
             .catch(err => {
@@ -142,8 +144,9 @@ class Controller {
     }
 
     static buyCoursePost(req, res){
+      const { userId } = req.session
         const courseId = +req.params.id
-        UserCourse.create({CourseId: courseId})
+        UserCourse.create({ UserId: userId, CourseId: courseId})
             .then(data => {
                 res.redirect('/courses')
             })
