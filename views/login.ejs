@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../css/login.css">
+  <title>User Login</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Login</h1>
+
+    <form action="/user/login" method="post">
+      <% if (error) { %>
+        <p class="error-msg"><%= error %></p>
+      <% } %>
+      <p>
+        Username <br>
+        <input type="text" name="username" id="" placeholder="Username" class="form-input">
+      </p>
+      <p>
+        Password <br>
+        <input type="password" name="password" id="" placeholder="Username" class="form-input">
+      </p>
+      <input type="submit" value="LOGIN" class="submit-btn">
+    </form>
+  </div>
+</body>
+</html>
