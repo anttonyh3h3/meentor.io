@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+</head>
+<body>
+    <h1>Student List</h1>
+    <a href="">Add Student</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Join Date</th>
+                <th>Courses</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+                <% data.forEach((el, index) => { %>
+                <tr>
+                    <td><%= ++index %> </td>
+                    <td><%= el.fullName %> </td>
+                    <td><%= el.username %> </td>
+                    <td><%= formatDate(el.createdAt) %> </td>
+                    <td>
+                        <% el.Courses.forEach(val => { %>
+                            -<%= val.name %><br>
+                        <% }) %>
+                    </td>
+                    <td><a href="/students/<%= el.id %>/detail ">Details</a></td>
+                </tr>
+            <% }) %>
+            
+        </tbody>
+    </table>
+</body>
+</html>

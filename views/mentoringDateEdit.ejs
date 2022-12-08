@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentoring Date</title>
+</head>
+<body>
+    <h1>Pick your mentoring date</h1>
+    <form action="/students/mentoringdate/<%= data.id %>/edit" method="post">
+        <label for="mentoringDate">Mentoring Date</label><br>
+        <% if (!data.mentoringDate) { %>
+            <input type="date" name="mentoringDate">
+        <% } else { %>
+            <input type="date" name="mentoringDate" value="<%= data.inputDate() %>">
+        <% } %> 
+        <br>
+        <input type="submit" name="Save">
+    </form>
+</body>
+</html>

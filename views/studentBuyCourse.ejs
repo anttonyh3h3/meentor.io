@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Detail</title>
+</head>
+<body>
+    <h1><%= data.name%> Course Detail</h1>
+
+    <p>
+        <strong>Course Name :</strong> <%= data.name %>
+    </p>
+    <p>
+        <strong>Description :</strong> <%= data.description %> 
+    </p>
+    <p>
+        <strong>Duration :</strong> <%= data.duration %> Minutes
+    </p>
+    <p>
+        <strong>Issued Date :</strong> <%= formatDate(data.createdAt) %>
+    </p>
+    <p>
+        <% if (!data.Instructor) { %>
+            <strong style="color: red;">NO INSTRUCTOR ASSIGNED TO THIS COURSE YET</strong>
+        <% } else { %>
+            <strong>Instructor :</strong> <%= data.Instructor.fullName %>
+        <% } %> 
+    </p>
+    <form action="/courses/<%= data.id %>/buyCourse" method="post">
+        <input type="submit" value="BUY COURSE">
+    </form>
+</body>
+</html>
