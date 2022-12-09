@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/book-mentor.css">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <title>Book Mentor</title>
+</head>
+<body>
+  <%- include('../partials/navbar.ejs') %>
+
+  <div class="container">
+    <h1>Book Mentor</h1>
+
+    <form action="/book-mentor/<%= data.id %>" method="post">
+      <p>
+        Pick date <br>
+        <% if (!data.mentoringDate) { %>
+          <input type="date" name="mentoringDate">
+          <% } else { %>
+            <input type="date" name="mentoringDate" value="<%= data.inputDate() %>">
+        <% } %>
+      </p>
+      <input type="submit" value="Save" class="save-btn">
+    </form>
+  </div>
+</body>
+</html>

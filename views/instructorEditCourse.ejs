@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructor Edit Course</title>
+</head>
+<body>
+    <h1>Instructor Edit Course</h1>
+    <form action="/instructors/<%= data.id %>/edit" method="post">
+        <label for="name">Name</label><br>
+        <input type="text" name="name" value="<%= data.name %>"><br>
+
+        <label for="description">Description</label><br>
+        <textarea name="description" id="" cols="30" rows="10"><%= data.description %> </textarea><br>
+
+        <label for="duration">Duration in Minutes</label><br>
+        <input type="number" name="duration" value="<%= data.duration %>"><br>
+
+        <label for="UserId">Instructor</label><br>
+        <% if (!data.Instructor) { %>
+            <strong style="color: red;">THIS COURSE DONT HAVE INSTRUCTOR --- PLEASE ADD INSTRUCTOR</strong><br>
+            <select name="UserId">
+                <option selected disabled>--SELECT INSTRUCTOR--</option>
+                <% instructor.forEach(el => { %>
+                    <option value="<%= el.id %>"><%= el.fullName %></option>
+                <% }) %>
+            </select>
+        <% } else { %>
+            <select name="UserId">
+                <option value="<%= data.Instructor.id %>"><%= data.Instructor.fullName %></option>
+                <% instructor.forEach(el => { %>
+                    <option value="<%= el.id %>"><%= el.fullName %></option>
+                <% }) %>
+            </select>
+        <% } %> 
+        <br>
+
+        <input type="submit" value="Save">
+    </form>
+</body>
+</html>

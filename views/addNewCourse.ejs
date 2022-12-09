@@ -8,20 +8,26 @@
 </head>
 <body>
     <h1>Add New Course</h1>
+    <form action="/instructors/add" method="post">
+        <label for="name">Name</label><br>
+        <input type="text" name="name"><br>
 
-    
-    <form action="/students/<%= userId%>/addNewCourse/<%= data.id %>" method="post">
-        <select name="CourseId">
-            <option selected disabled>--SELECT COURSE--</option>
+        <label for="description">Description</label><br>
+        <textarea name="description" cols="30" rows="10"></textarea><br>
+
+        <label for="duration">Duration</label><br>
+        <input type="number" name="duration"><br>
+
+        <label for="UserId">Instructor</label><br>
+
+        <select name="UserId">
+            <option selected disabled>--SELECT INSTRUCTOR--</option>
             <% data.forEach(el => { %>
-                <% if (!el.Instructor) { %>
-                    <option value="<%= el.id %>"><%= el.name %> --- No Instructor Yet </option>
-                <% } else { %>
-                    <option value="<%= el.id %>"><%= el.name %> --- <%= el.Instructor.fullName %> </option>
-                <% } %> 
+                <option value="<%= el.id %>"><%= el.fullName %></option>
             <% }) %>
-        </select>
-        <input type="submit" value="Submit">
+        </select><br>
+
+        <input type="submit" name="Submit">
     </form>
 </body>
 </html>
